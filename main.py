@@ -171,7 +171,8 @@ if __name__ == "__main__":
     else:
         df_post = pd.read_pickle('df_post_processed.pickle')
         df_user = pd.read_pickle('df_user_processed.pickle')
-
+    
+    # make results folder for plots
     os.makedirs(os.path.join('a_plots', 'imgs'), exist_ok=False)
 
     pair_tables(df_post, df_user)

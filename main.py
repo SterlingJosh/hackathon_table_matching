@@ -119,12 +119,11 @@ def pair_tables(child, parent):
     while(len(child_new) < num_children_to_make and len(child) > num_neighbors and len(parent) > num_neighbors and count < ITERATION_COUNT):
 
         # adding random noise to avoid oversampling the same indices
-        parent_vals = np.expand_dims(parent[PARENT_HISTREF].values  + (np.random.rand(len(parent)) - 0.5)*noise_beta , axis=1) #  
-        child_vals = np.expand_dims(child[CHILD_HISTREF].values + (np.random.rand(len(child)) - 0.5)*noise_beta , axis=1)  # + 
+        parent_vals = np.expand_dims(parent[PARENT_HISTREF].values  + (np.random.rand(len(parent)) - 0.5)*noise_beta , axis=1)
+        child_vals = np.expand_dims(child[CHILD_HISTREF].values + (np.random.rand(len(child)) - 0.5)*noise_beta , axis=1)  
 
         # get the nearest parent date (idx) for each child date
         tree = KDTree(child_vals, leaf_size=40)
-        print('querying')
         distances, idcs = tree.query(parent_vals, k=num_neighbors, dualtree=True, return_distance=True) 
        
         # for each of n nearest neighbors, set most uniques to the first column        

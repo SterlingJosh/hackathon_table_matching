@@ -5,13 +5,15 @@ import matplotlib.pyplot as plt
 
 from dataset import prepare_data
 import timeit
-
+import os
 
 REGENERATE_DATA=False
 DATA_LOC = 'stats'
 COLUMNS_FOR_HISTREF = ['CreationDate', 'LastAccessDate']
 PARENT_HISTREF = 'CreationDate'
 CHILD_HISTREF = 'histref_CreationDate'
+ITERATION_COUNT = 100    # how many kdtree build/query iterations we do. 100 will reach about 60% completion
+
 
 def choose_neighbors(idcs, distances, num_neighbors):
 
@@ -48,7 +50,7 @@ def summarize_results(count, parent_new, og_parent_len, dists, parent_idcs, dist
                 Total average = {np.mean(dists)} \
                 max distance = {np.max(dists)}. 95th percentile {np.percentile(dists, q=95)}")
 
-        ax[0].hist(dists, bins=40, range=[0, 55], color='darkblue')
+        ax[0].hist(dists, bins=40, range=[0, 40], color='darkblue')
         ax[0].set_title('distribution of distances',fontsize=12)
         ax[0].set_xlabel('distance (days)')
         ax[0].set_ylabel('count (rows)')
@@ -114,7 +116,7 @@ def pair_tables(child, parent):
     fig, ax = plt.subplots(3, figsize=(8, 12), gridspec_kw={'height_ratios': [2,1,1]})
 
     # now continuously constructing and updating the kd-tree and querying for closest matches
-    while(len(child_new) < num_children_to_make and len(child) > num_neighbors and len(parent) > num_neighbors and count < 100):
+    while(len(child_new) < num_children_to_make and len(child) > num_neighbors and len(parent) > num_neighbors and count < ITERATION_COUNT):
 
         # adding random noise to avoid oversampling the same indices
         parent_vals = np.expand_dims(parent[PARENT_HISTREF].values  + (np.random.rand(len(parent)) - 0.5)*noise_beta , axis=1) #  
@@ -169,5 +171,7 @@ if __name__ == "__main__":
     else:
         df_post = pd.read_pickle('df_post_processed.pickle')
         df_user = pd.read_pickle('df_user_processed.pickle')
+
+    os.makedirs(os.path.join('a_plots', 'imgs'), exist_ok=False)
 
     pair_tables(df_post, df_user)

@@ -8,6 +8,7 @@ import timeit
 
 
 REGENERATE_DATA=False
+DATA_LOC = 'stats'
 COLUMNS_FOR_HISTREF = ['CreationDate', 'LastAccessDate']
 PARENT_HISTREF = 'CreationDate'
 CHILD_HISTREF = 'histref_CreationDate'
@@ -161,12 +162,12 @@ def pair_tables(child, parent):
 if __name__ == "__main__":
 
     if (REGENERATE_DATA):
-        df_post, df_user = prepare_data(COLUMNS_FOR_HISTREF)
+        df_post, df_user = prepare_data(COLUMNS_FOR_HISTREF, DATA_LOC)
 
-        df_post.to_pickle('df_post.pickle')
-        df_user.to_pickle('df_user.pickle')
+        df_post.to_pickle('df_post_processed.pickle')
+        df_user.to_pickle('df_user_processed.pickle')
     else:
-        df_post = pd.read_pickle('df_post.pickle')
-        df_user = pd.read_pickle('df_user.pickle')
+        df_post = pd.read_pickle('df_post_processed.pickle')
+        df_user = pd.read_pickle('df_user_processed.pickle')
 
     pair_tables(df_post, df_user)

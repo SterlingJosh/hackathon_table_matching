@@ -2,4 +2,5 @@ plots/
 a_plots/
 __pycache__/
 gamedev/
+stats_extra/
 stats/

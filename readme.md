@@ -1,5 +1,11 @@
+### hackathon table matching
+1. download data from : https://we.tl/t-o792OTQqYn 
+2. unpack it and put both pickle files in stats/
+3. check and set globals in top of main.py
+4. launch main.py
 
 
+### data description
  - Format: 7zipped
  - Files:
    - **badges**.xml

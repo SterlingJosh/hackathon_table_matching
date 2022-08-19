@@ -32,7 +32,7 @@ def match_child_row_numbers(parent, child):
     return parent, child
 
 
-def prepare_data(columns_for_histref:list):
+def prepare_data(columns_for_histref:list, data_loc:str):
     """ingests data, prepares for table matching
 
     Args:
@@ -44,8 +44,8 @@ def prepare_data(columns_for_histref:list):
 
     print('starting')
 
-    df_post = pd.read_pickle('stats/posts.pickle')
-    df_user = pd.read_pickle('stats/user.pickle')
+    df_post = pd.read_pickle(f"{data_loc}/posts.pickle")
+    df_user = pd.read_pickle(f"{data_loc}/user.pickle")
 
     # drop some columns
     df_post = df_post[['Id', 'OwnerUserId', 'CreationDate', 'LastEditDate']]
